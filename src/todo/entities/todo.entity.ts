@@ -1,16 +1,13 @@
 import { literal } from "sequelize";
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
 
-export enum ETodoStatus {
-    TODO = 'to do',
-    ONPROGRESS = 'on progress',
-    DONE = 'done'
-}
-
 @Table({ tableName: 'todo'})
 export class Todo extends Model {
     @PrimaryKey
-    @Column
+    @Column({
+		type: DataType.UUIDV4,
+		defaultValue: DataType.UUIDV4,
+	})
     id: string
 
     @Column({
