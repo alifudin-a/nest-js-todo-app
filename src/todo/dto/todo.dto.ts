@@ -9,8 +9,8 @@ import {
 import { ESort } from 'src/config/enum/enum';
 
 export enum ETodoStatus {
-  TODO = 'to do',
-  ONPROGRESS = 'on progress',
+  TODO = 'to_do',
+  ONPROGRESS = 'on_progress',
   DONE = 'done',
 }
 
@@ -48,4 +48,8 @@ export class TodoListQueryParamDTO {
 
   @IsNumberString()
   offset: number;
+
+  @IsOptional()
+  @IsEnum(ETodoStatus)
+  status: ETodoStatus
 }

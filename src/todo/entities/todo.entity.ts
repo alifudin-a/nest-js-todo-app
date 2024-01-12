@@ -1,5 +1,6 @@
 import { literal } from "sequelize";
-import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { User } from "src/user/entities/user.entity";
 
 @Table({ tableName: 'todo'})
 export class Todo extends Model {
@@ -9,6 +10,9 @@ export class Todo extends Model {
 		defaultValue: DataType.UUIDV4,
 	})
     id: string
+
+    @BelongsTo(() => User, 'userId')
+    user: User
 
     @Column({
         field: 'userid'
