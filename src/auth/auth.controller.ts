@@ -16,12 +16,16 @@ import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { JwtService } from '@nestjs/jwt';
 import { UserDTO } from 'src/user/dto/user.dto';
 import { Op } from 'sequelize';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager'; // ! Don't forget this import
+import { Inject } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   @Post('/login')
@@ -45,6 +49,8 @@ export class AuthController {
 
     const payload = { id: user.id, username: user.username, role: user.role };
     const token = await this.jwtService.signAsync(payload);
+
+    await this.cacheManager.set(payload.id, token, 60 * 60 * 100);
 
     return {
       statusCode: 200,
